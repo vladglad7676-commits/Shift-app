@@ -18,7 +18,15 @@ function saveSettings(s) {
   localStorage.setItem(LS_SETTINGS, JSON.stringify(s));
 }
 
-let data = loadData();
+let data = loadData(); function toLocalInputValue(date = new Date()) {
+  const pad = (n) => String(n).padStart(2, "0");
+  const y = date.getFullYear();
+  const m = pad(date.getMonth() + 1);
+  const d = pad(date.getDate());
+  const h = pad(date.getHours());
+  const min = pad(date.getMinutes());
+  return ${y}-${m}-${d}T${h}:${min};
+}
 let settings = loadSettings();
 
 /* ====== УТИЛИТЫ ====== */
@@ -106,9 +114,9 @@ function openModal(id=null){
   $("modal").classList.remove("hidden");
 
   let s = id ? data.shifts.find(x=>x.id===id) : {
-    plannedStart: new Date().toISOString(),
-    plannedEnd: new Date(Date.now()+8*3600000).toISOString()
-  };
+  plannedStart: toLocalInputValue(new Date()),
+  plannedEnd: toLocalInputValue(new Date(Date.now() + 8 * 3600000))
+};
 
   $("mPlannedStart").value = s.plannedStart.slice(0,16);
   $("mPlannedEnd").value   = s.plannedEnd.slice(0,16);
@@ -193,4 +201,5 @@ $("calcMinutes").oninput = renderCalc;
 
 /* ====== СТАРТ ====== */
 renderCalendar();
+
 renderCalc();
