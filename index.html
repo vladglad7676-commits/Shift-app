@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b0f" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <title>Смены</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="title">Смены</div>
+    <button id="btnNew" class="btn primary">+ Смена</button>
+  </header>
+
+  <main class="container">
+    <nav class="tabs">
+      <button class="tab active" data-tab="calendar">Календарь</button>
+      <button class="tab" data-tab="reports">Отчёты</button>
+      <button class="tab" data-tab="calc">Калькулятор</button>
+      <button class="tab" data-tab="settings">Ставка</button>
+    </nav>
+
+    <!-- CALENDAR -->
+    <section id="tab-calendar" class="panel active">
+      <div class="row between wrap gap">
+        <div class="row gap">
+          <button id="prevMonth" class="btn">‹</button>
+          <button id="nextMonth" class="btn">›</button>
+          <button id="todayBtn" class="btn">Сегодня</button>
+        </div>
+        <div id="monthLabel" class="muted"></div>
+      </div>
+
+      <div class="calendar">
+        <div class="cal-head">
+          <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+        </div>
+        <div id="calGrid" class="cal-grid"></div>
+      </div>
+
+      <h3 class="h3">Смены на <span id="dayLabel"></span></h3>
+      <div id="dayList" class="list"></div>
+      <div class="hint">
+        После времени окончания смена станет <b>“Требует подтверждения”</b>.
+        Открой → поправь факт/перерыв → нажми <b>“Завершена”</b>.
+      </div>
+    </section>
+
+    <!-- REPORTS -->
+    <section id="tab-reports" class="panel">
+      <div class="row gap wrap">
+        <select id="reportMode" class="input">
+          <option value="week">Неделя</option>
+          <option value="month">Месяц</option>
+          <option value="payroll">Период выплаты</option>
+        </select>
+        <input id="reportAnchor" class="input" type="date" />
+        <button id="reportPrev" class="btn">‹</button>
+        <button id="reportNext" class="btn">›</button>
+      </div>
+
+      <div class="card">
+        <div class="row between">
+          <div>
+            <div class="muted" id="reportRange">—</div>
+            <div class="big"><span id="reportHours">0.00</span></div>
+            <div class="muted">часов</div>
+          </div>
+          <div class="right">
+            <div class="muted" id="reportPayout"> </div>
+            <div class="big"><span id="reportMoney">0.00</span></div>
+            <div class="muted">₽</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="h3">Смены в периоде</h3>
+      <div id="reportList" class="list"></div>
+    </section>
+
+    <!-- CALC -->
+    <section id="tab-calc" class="panel">
+      <div class="card">
+        <div class="row gap">
+          <div class="field">
+            <label>Часы</label>
+            <input id="calcHours" class="input" inputmode="numeric" placeholder="0" />
+          </div>
+          <div class="field">
+            <label>Минуты</label>
+            <input id="calcMinutes" class="input" inputmode="numeric" placeholder="0..59" />
+          </div>
+        </div>
+        <div class="row between">
+          <div class="muted">Ставка</div>
+          <div><span id="calcRate">—</span> ₽/час</div>
+        </div>
+        <div class="row between">
+          <div class="muted">Итого</div>
+          <div class="big"><span id="calcResult">0.00</span> ₽</div>
+        </div>
+      </div>
+      <div class="hint">Калькулятор: часы+минуты × ставка.</div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="tab-settings" class="panel">
+      <div class="card">
+        <div class="field">
+          <label>Ставка (₽/час)</label>
+          <input id="rateInput" class="input" inputmode="decimal" placeholder="например 360" />
+        </div>
+        <button id="saveRate" class="btn primary full">Сохранить</button>
+        <div class="hint">
+            В <b>завершённых</b> сменах ставка фиксируется, чтобы прошлые выплаты не “плыли”.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="sheet">
+      <div class="row between">
+        <div class="sheet-title" id="modalTitle">Смена</div>
+        <button id="closeModal" class="btn">✕</button>
+      </div>
+
+      <div class="pillrow">
+        <span id="statusPill" class="pill">—</span>
+      </div>
+
+      <div class="card">
+        <div class="field">
+          <label>План: начало</label>
+          <input id="mPlannedStart" class="input" type="datetime-local" />
+        </div>
+        <div class="field">
+          <label>План: конец</label>
+          <input id="mPlannedEnd" class="input" type="datetime-local" />
+        </div>
+
+        <div class="row between">
+          <div class="muted">Перерыв (не оплачивается)</div>
+          <label class="switch">
+            <input id="mHasBreak" type="checkbox" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div id="breakBlock" class="grid2 hidden">
+          <div class="field">
+            <label>Перерыв с</label>
+            <input id="mBreakStart" class="input" type="datetime-local" />
+          </div>
+          <div class="field">
+            <label>Перерыв до</label>
+            <input id="mBreakEnd" class="input" type="datetime-local" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row between">
+          <div class="muted">Факт (для подтверждения)</div>
+          <button id="copyPlanToActual" class="btn">= План</button>
+        </div>
+
+        <div class="field">
+          <label>Факт: начало</label>
+          <input id="mActualStart" class="input" type="datetime-local" />
+        </div>
+        <div class="field">
+          <label>Факт: конец</label>
+          <input id="mActualEnd" class="input" type="datetime-local" />
+        </div>
+
+        <div class="row between">
+          <div class="muted">Факт: перерыв</div>
+          <label class="switch">
+            <input id="mHasActualBreak" type="checkbox" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div id="actualBreakBlock" class="grid2 hidden">
+          <div class="field">
+            <label>Факт перерыв с</label>
+            <input id="mActualBreakStart" class="input" type="datetime-local" />
+          </div>
+          <div class="field">
+            <label>Факт перерыв до</label>
+            <input id="mActualBreakEnd" class="input" type="datetime-local" />
+          </div>
+        </div>
+
+        <div class="row between">
+          <div class="muted">Оплачиваемо</div>
+          <div><span id="mPaidHours">—</span> ч</div>
+        </div>
+        <div class="row between">
+          <div class="muted">Сумма</div>
+          <div class="big"><span id="mMoney">—</span> ₽</div>
+        </div>
+
+        <div id="mError" class="error hidden"></div>
+      </div>
+
+      <div class="row gap wrap">
+        <button id="savePlan" class="btn primary">Сохранить план</button>
+        <button id="finishShift" class="btn success">Завершена</button>
+        <button id="deleteShift" class="btn danger">Удалить</button>
+      </div>
+
+      <div class="hint">Смена относится к периоду выплаты по <b>дате начала</b>.</div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
