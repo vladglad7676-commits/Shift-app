@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#6aa3ff" />
+  <title>Смены — Неделя</title>
+
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- iOS PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body>
+  <header class="top">
+    <div class="top__title">
+      <div class="appname">Смены</div>
+      <div class="subtitle">Неделя</div>
+    </div>
+
+    <div class="top__controls">
+      <label class="ratebox">
+        <span>Моя ставка</span>
+        <div class="ratebox__row">
+          <input id="defaultRate" class="input input--rate" inputmode="decimal" placeholder="360" />
+          <span class="unit">₽/час</span>
+        </div>
+      </label>
+
+      <button id="resetBtn" class="btn" type="button" title="Сбросить неделю">Сброс</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="weekList" class="week"></section>
+
+    <section class="totals">
+      <div class="totals__row">
+        <div class="muted">Всего за неделю</div>
+        <div class="totals__val"><b><span id="sumWeekHours">0.00</span> ч</b> · <b><span id="sumWeekMoney">0.00</span> ₽</b></div>
+      </div>
+      <div class="totals__row">
+        <div class="muted">4 недели</div>
+        <div class="totals__val"><b><span id="sum4wHours">0.00</span> ч</b> · <b><span id="sum4wMoney">0.00</span> ₽</b></div>
+      </div>
+      <div class="totals__row">
+        <div class="muted">Средний месяц (~4.33 недели)</div>
+        <div class="totals__val"><b><span id="sumMoHours">0.00</span> ч</b> · <b><span id="sumMoMoney">0.00</span> ₽</b></div>
+      </div>
+    </section>
+
+    <p class="hint">
+      • В каждом дне можно задать <b>свою ставку</b> (если пусто — берётся “Моя ставка”).<br>
+      • Ночная смена: если “До” меньше “От” — считается переход через полночь.<br>
+      • Перерыв не оплачивается.
+    </p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
