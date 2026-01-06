@@ -1,0 +1,195 @@
+:root{
+  --bg:#6aa3ff;
+  --bg2:#9cc0ff;
+  --card:#ffffff;
+  --soft:#f3f7ff;
+  --line:rgba(12,22,40,.10);
+  --text:#0d1b2a;
+  --muted:#3e5b78;
+  --danger:#ff3b30;
+  --ok:#25c26e;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,system-ui,Segoe UI,Roboto,Arial;
+  color:var(--text);
+  background:linear-gradient(180deg,var(--bg),var(--bg2));
+}
+
+.wrap{max-width:820px;margin:0 auto;padding:14px 12px 28px}
+
+.top{
+  position:sticky;top:0;z-index:5;
+  padding:14px 12px;
+  background:rgba(106,163,255,.92);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.35);
+}
+.top__title{display:flex;align-items:baseline;gap:10px;justify-content:space-between}
+.appname{font-weight:1000;font-size:22px;color:#fff}
+.subtitle{font-weight:900;color:rgba(255,255,255,.95)}
+.top__controls{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+  align-items:flex-end;
+  flex-wrap:wrap;
+}
+.ratebox{
+  flex:1;
+  min-width:260px;
+  background:rgba(255,255,255,.20);
+  border:1px solid rgba(255,255,255,.35);
+  padding:10px;
+  border-radius:16px;
+  color:#fff;
+  font-weight:900;
+}
+.ratebox span{opacity:.95}
+.ratebox__row{display:flex;gap:10px;align-items:center;margin-top:8px}
+.unit{white-space:nowrap;opacity:.95}
+
+.btn{
+  border:0;
+  border-radius:16px;
+  padding:12px 14px;
+  font-weight:1000;
+  background:rgba(255,255,255,.26);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.35);
+}
+
+.input{
+  width:100%;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.92);
+  border-radius:14px;
+  padding:11px 12px;
+  font-weight:1000;
+  outline:none;
+}
+.input--rate{max-width:140px}
+.muted{color:var(--muted);font-weight:900}
+
+.week{display:flex;flex-direction:column;gap:12px;margin-top:10px}
+
+.day{
+  background:rgba(255,255,255,.92);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:12px;
+}
+
+.day__top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+}
+.day__left{display:flex;align-items:center;gap:10px}
+.chk{width:22px;height:22px;accent-color:#2f7dff}
+.dayname{font-weight:1000;font-size:18px}
+.daymeta{font-weight:900;color:var(--muted);margin-top:2px;font-size:12px}
+
+.day__right{
+  text-align:right;
+  font-weight:1000;
+}
+.badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  background:var(--soft);
+  border:1px solid var(--line);
+  font-size:12px;
+  font-weight:1000;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
+
+.box{
+  background:var(--soft);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:10px;
+}
+.label{font-size:12px;color:var(--muted);font-weight:1000;margin-bottom:6px}
+
+.row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.breakRow{
+  flex:2;
+  min-width:260px;
+}
+.rateRow{
+  flex:1;
+  min-width:220px;
+}
+
+.switchline{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+}
+.small{font-size:12px;color:var(--muted);font-weight:900}
+
+.times{display:flex;gap:10px;flex-wrap:wrap}
+.timeWrap{flex:1;min-width:140px}
+
+.summary{
+  margin-top:10px;
+  background:#fff;
+  border:1px dashed rgba(12,22,40,.18);
+  border-radius:16px;
+  padding:10px 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  font-weight:1000;
+}
+.warn{
+  margin-top:10px;
+  color:var(--danger);
+  font-weight:1000;
+  font-size:12px;
+  display:none;
+}
+
+.totals{
+  margin-top:14px;
+  background:rgba(255,255,255,.25);
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:18px;
+  padding:12px;
+  color:#fff;
+}
+.totals__row{display:flex;justify-content:space-between;gap:10px;padding:7px 2px}
+.totals__val{font-weight:1000}
+
+.hint{
+  margin-top:10px;
+  color:rgba(255,255,255,.95);
+  font-weight:900;
+  line-height:1.35;
+}
+
+@media (max-width:520px){
+  .grid{grid-template-columns:1fr}
+  .top__title{flex-direction:row}
+}
